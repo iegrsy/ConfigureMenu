@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    ui->lstMenu->installEventFilter(this);
 
 
 
@@ -69,15 +69,48 @@ QStringList MainWindow::jObjToListMenu(QJsonObject jObj)
     return itemList;
 }
 
-
-
-
 void MainWindow::on_lstMenu_itemDoubleClicked(QListWidgetItem *item)
 {
     qDebug()<<item->text();
 }
 
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    if (obj == ui->lstMenu)
+    {
+        QListWidget *lstMenu = static_cast<QListWidget*>(obj);
 
+        //Capture key event
+        if (event->type() == QEvent::KeyPress)
+        {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+
+            if(keyEvent->key() == Qt::Key_Control)
+            {
+                ctrlKeyDown = true;
+            }
+            else if (keyEvent->key() == Qt::Key_Return) {
+                if(!lstMenu->selectedItems().isEmpty())
+                    qDebug()<<lstMenu->selectedItems().at(0)->text();
+            }
+
+            return false;
+        }
+        else if (event->type() == QEvent::KeyRelease)
+        {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent*>(event);
+
+            if(keyEvent->key() == Qt::Key_Control)
+                ctrlKeyDown = false;
+
+            return false;
+        }
+    }
+    else
+    {
+        return QMainWindow::eventFilter(obj, event);
+    }
+}
 
 
 

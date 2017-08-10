@@ -34,10 +34,12 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QJsonDocument jDoc;
+    bool ctrlKeyDown;
 
     QString readFile(QString path);
     void readJson(QString str);
     QStringList jObjToListMenu(QJsonObject jObj);
+    bool eventFilter(QObject *obj, QEvent *event);
 };
 
 #endif // MAINWINDOW_H
