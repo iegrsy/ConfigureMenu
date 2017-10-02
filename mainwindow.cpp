@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 
-    QString jfilepath = "/home/ieg/qt/qtProjects/ConfigurationSetting/settings.json";
+    QString jfilepath = "/home/ieg/Masaüstü/ieggit/ConfigureMenu/settings.json";
     QString jstr = readFile(jfilepath);
     readJson(jstr);
 }
